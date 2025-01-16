@@ -9,17 +9,30 @@ const AppContainer = styled.div`
   min-height: 100vh;
   background-color: #f0f2f5;
   padding: 20px;
+  
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const GameHeader = styled.div`
   text-align: center;
   margin-bottom: 30px;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 15px;
+  }
 `;
 
 const Title = styled.h1`
   color: #2c3e50;
   font-size: 2.5rem;
   margin-bottom: 10px;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
 `;
 
 const MenuContainer = styled.div`
@@ -29,6 +42,11 @@ const MenuContainer = styled.div`
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  
+  @media (max-width: 768px) {
+    max-width: 95%;
+    padding: 15px;
+  }
 `;
 
 const Button = styled.button`
@@ -49,6 +67,12 @@ const Button = styled.button`
   &:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 8px 16px;
+    font-size: 1rem;
+    margin: 5px;
   }
 `;
 

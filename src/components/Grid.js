@@ -14,6 +14,12 @@ const GridContainer = styled.div`
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 5px;
+    gap: 1px;
+    max-width: 95vw;
+  }
 `;
 
 const SelectionLine = styled.div`
@@ -37,6 +43,11 @@ const Cell = styled.div`
   cursor: pointer;
   user-select: none;
   color: #333;
+  touch-action: none; /* Prevent default touch actions */
+
+  @media (max-width: 768px) {
+    font-size: 0.9em;
+  }
 `;
 
 const Grid = ({ size, letters, onWordFound, foundWords = [] }) => {
@@ -269,6 +280,53 @@ const Grid = ({ size, letters, onWordFound, foundWords = [] }) => {
     setSelectedCells([]);
   };
 
+  const handleTouchStart = (index, e) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setSelectedCells([index]);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!isDragging || !gridRef.current) return;
+
+    const touch = e.touches[0];
+    const grid = gridRef.current;
+    const gridRect = grid.getBoundingClientRect();
+    const cellWidth = gridRect.width / size;
+    const cellHeight = gridRect.height / size;
+
+    // Get touch position relative to grid
+    const x = touch.clientX - gridRect.left;
+    const y = touch.clientY - gridRect.top;
+
+    // Convert to grid coordinates
+    const col = Math.floor(x / cellWidth);
+    const row = Math.floor(y / cellHeight);
+
+    if (col >= 0 && col < size && row >= 0 && row < size) {
+      const index = row * size + col;
+      const newSelection = [...selectedCells];
+      
+      // Only add if it's not the last cell selected
+      if (index !== newSelection[newSelection.length - 1]) {
+        newSelection.push(index);
+        if (isValidSelection(newSelection, size)) {
+          setSelectedCells(newSelection);
+        }
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (selectedCells.length >= 2) {
+      const word = getWordFromSelection(selectedCells, letters, size);
+      onWordFound(word);
+    }
+    setIsDragging(false);
+    setSelectedCells([]);
+  };
+
   return (
     <GridContainer 
       ref={gridRef}
@@ -277,6 +335,9 @@ const Grid = ({ size, letters, onWordFound, foundWords = [] }) => {
         setIsDragging(false);
         setSelectedCells([]);
       }}
+      onTouchStart={(e) => e.preventDefault()}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <SelectionLine>
         {renderHighlights()}
@@ -287,6 +348,7 @@ const Grid = ({ size, letters, onWordFound, foundWords = [] }) => {
           onMouseDown={() => handleCellMouseDown(index)}
           onMouseEnter={() => handleCellMouseEnter(index)}
           onMouseUp={handleCellMouseUp}
+          onTouchStart={(e) => handleTouchStart(index, e)}
         >
           {letter}
         </Cell>
