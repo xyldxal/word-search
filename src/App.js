@@ -59,9 +59,16 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
+  touch-action: manipulation; /* Improve touch response */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
 
   &:hover {
     background-color: #45a049;
+  }
+
+  &:active {
+    background-color: #3d8b40; /* Darker color when pressed */
+    transform: scale(0.98); /* Slight scale down when pressed */
   }
 
   &:disabled {
@@ -70,9 +77,9 @@ const Button = styled.button`
   }
   
   @media (max-width: 768px) {
-    padding: 8px 16px;
+    padding: 12px 24px; /* Larger touch target on mobile */
     font-size: 1rem;
-    margin: 5px;
+    margin: 8px;
   }
 `;
 

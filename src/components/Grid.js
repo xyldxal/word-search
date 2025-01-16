@@ -14,6 +14,7 @@ const GridContainer = styled.div`
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
+  touch-action: none; /* Only prevent default touch actions on the grid */
 
   @media (max-width: 768px) {
     padding: 5px;
@@ -43,7 +44,6 @@ const Cell = styled.div`
   cursor: pointer;
   user-select: none;
   color: #333;
-  touch-action: none; /* Prevent default touch actions */
 
   @media (max-width: 768px) {
     font-size: 0.9em;

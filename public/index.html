@@ -34,6 +34,43 @@
 
     <style>
       /* Add some basic styles to ensure proper rendering */
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Prevent text selection */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      /* Allow text selection in input fields */
+      input, textarea {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+      
+      /* Remove tap highlight on iOS */
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+      
+      /* Ensure buttons are easily tappable */
+      button {
+        min-height: 44px;
+        min-width: 44px;
+      }
+
+      /* Add some basic styles to ensure proper rendering */
       * {
         margin: 0;
         padding: 0;
