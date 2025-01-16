@@ -179,7 +179,7 @@ function App() {
           }}
           disabled={index + 1 > highestLevel}
         >
-          Level {level.id}
+          {level.id}
         </Button>
       ))}
       <Button 
