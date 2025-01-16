@@ -61,7 +61,7 @@ const Level = ({ levelData, onLevelComplete }) => {
       levelData.gridSize, 
       levelData.words
     );
-    setGrid(newGrid);
+    setGrid(newGrid.flat()); // Flatten the grid here
   }, [levelData]);
 
   const handleWordFound = (word) => {
@@ -103,15 +103,18 @@ const Level = ({ levelData, onLevelComplete }) => {
       </LevelHeader>
 
       <WordList>
-        <Word 
-          words={levelData.words}
-          foundWords={foundWords}
-        />
+        {levelData.words.map((word, index) => (
+          <Word
+            key={index}
+            word={word}
+            found={foundWords.includes(word)}
+          />
+        ))}
       </WordList>
 
       <Grid
         size={levelData.gridSize}
-        letters={grid.flat()} // Convert 2D array to 1D
+        letters={grid}
         onWordFound={handleWordFound}
         foundWords={foundWords}
       />

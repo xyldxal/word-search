@@ -161,28 +161,29 @@ function App() {
       {levels.map((level, index) => (
         <Button
           key={level.id}
-          onClick={() => startLevel(level.id)}
-          disabled={level.id > highestLevel}
+          onClick={() => startLevel(index + 1)}
+          disabled={index + 1 > highestLevel}
         >
           Level {level.id}
+          {index + 1 <= highestLevel && (
+            <span style={{ fontSize: '0.8em', marginLeft: '8px' }}>
+              🔓
+            </span>
+          )}
         </Button>
       ))}
+      <Button onClick={resetGame}>Reset Progress</Button>
       <h3>Total Score: {totalScore}</h3>
     </MenuContainer>
   );
 
   const renderLevel = () => {
-    const levelData = levels.find(l => l.id === currentLevel);
+    const levelData = levels[currentLevel - 1];
     if (!levelData) return null;
 
-    const { grid } = generateWordSearchGrid(levelData.gridSize, levelData.words);
-    
     return (
       <Level
-        levelData={{
-          ...levelData,
-          grid: grid.flat()
-        }}
+        levelData={levelData}
         onLevelComplete={handleLevelComplete}
       />
     );
