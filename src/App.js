@@ -59,16 +59,17 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  touch-action: manipulation; /* Improve touch response */
-  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none; // Add this
 
   &:hover {
     background-color: #45a049;
   }
 
   &:active {
-    background-color: #3d8b40; /* Darker color when pressed */
-    transform: scale(0.98); /* Slight scale down when pressed */
+    background-color: #3d8b40;
+    transform: scale(0.98);
   }
 
   &:disabled {
@@ -77,9 +78,9 @@ const Button = styled.button`
   }
   
   @media (max-width: 768px) {
-    padding: 12px 24px; /* Larger touch target on mobile */
-    font-size: 1rem;
+    padding: 15px 30px; // Increased padding for better touch target
     margin: 8px;
+    font-size: 1.2rem; // Slightly larger font for mobile
   }
 `;
 
@@ -141,7 +142,6 @@ function App() {
     setShowModal(true);
   };
 
-
   const startLevel = (levelNumber) => {
     setCurrentLevel(levelNumber);
     setShowModal(false);
@@ -154,20 +154,37 @@ function App() {
     setHighestLevel(1);
   };
 
-
   const renderMenu = () => (
     <MenuContainer>
       <h2>Select Level</h2>
       {levels.map((level, index) => (
         <Button
           key={level.id}
-          onClick={() => startLevel(index + 1)}
+          onClick={(e) => {
+            e.preventDefault();
+            startLevel(index + 1);
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            startLevel(index + 1);
+          }}
           disabled={index + 1 > highestLevel}
         >
           Level {level.id}
         </Button>
       ))}
-      <Button onClick={resetGame}>Reset Progress</Button>
+      <Button 
+        onClick={(e) => {
+          e.preventDefault();
+          resetGame();
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          resetGame();
+        }}
+      >
+        Reset Progress
+      </Button>
       <h3>Total Score: {totalScore}</h3>
     </MenuContainer>
   );
@@ -196,28 +213,33 @@ function App() {
   };
 
   return (
-    <AppContainer>
-      <GameHeader>
-        <Title>Word Search Game</Title>
-      </GameHeader>
+    <>
+      <GlobalStyle />
+      <AppContainer>
+        <GameHeader>
+          <Title>Word Search Game</Title>
+        </GameHeader>
 
-      {currentLevel === 0 ? renderMenu() : renderLevel()}
+        {currentLevel === 0 ? renderMenu() : renderLevel()}
 
-      {showModal && (
-        <ModalOverlay>
-          <Modal>
-            <h2>Congratulations!</h2>
-            <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
-            <Button onClick={() => {
-              setShowModal(false);
-              setCurrentLevel(currentLevel + 1);
-            }}>
-              Next Level
-            </Button>
-          </Modal>
-        </ModalOverlay>
-      )}
-    </AppContainer>
+        {showModal && (
+          <ModalOverlay>
+            <Modal>
+              <h2>Congratulations!</h2>
+              <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
+              <Button 
+                onClick={() => {
+                  setShowModal(false);
+                  setCurrentLevel(currentLevel + 1);
+                }}
+              >
+                Next Level
+              </Button>
+            </Modal>
+          </ModalOverlay>
+        )}
+      </AppContainer>
+    </>
   );
 }
 
