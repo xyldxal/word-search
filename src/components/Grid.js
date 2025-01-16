@@ -12,7 +12,7 @@ const GridContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 700px;
+  max-width: 100%; /* Allow full width for smaller grids */
   margin: 0 auto;
   touch-action: none; /* Only prevent default touch actions on the grid */
 
@@ -256,6 +256,11 @@ const Grid = ({ size, letters, onWordFound, foundWords = [] }) => {
     
     setFoundCells(newFoundCells);
   }, [foundWords, letters, size]);
+
+  useEffect(() => {
+    // Reset selected cells when grid size changes
+    setSelectedCells([]);
+  }, [size]);
 
   const handleCellMouseDown = (index) => {
     setIsDragging(true);

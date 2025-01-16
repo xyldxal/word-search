@@ -49,30 +49,60 @@ const WordList = styled.div`
   }
 `;
 
-const Level = ({ levelData, onLevelComplete }) => {
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Modal = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+`;
+
+const Button = styled.button`
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const Level = ({ levelData, onLevelComplete, onTimeout }) => {
   const [foundWords, setFoundWords] = useState([]);
   const [score, setScore] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(levelData.timeLimit);
   const [grid, setGrid] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [timeoutModal, setTimeoutModal] = useState(false);
 
   useEffect(() => {
-    // Reset state when level changes
-    setFoundWords([]);
-    setScore(0);
-    setTimeRemaining(levelData.timeLimit);
-    
-    // Generate new grid
-    const { grid: newGrid } = generateWordSearchGrid(
-      levelData.gridSize, 
-      levelData.words
-    );
-    setGrid(Array.isArray(newGrid) ? newGrid.flat() : []);
-  }, [levelData]);
+    const initializeLevel = () => {
+      setFoundWords([]);
+      setScore(0);
+      const { grid: newGrid } = generateWordSearchGrid(
+        levelData.gridSize, 
+        levelData.words
+      );
+      setGrid(Array.isArray(newGrid) ? newGrid.flat() : []);
+    };
+
+    initializeLevel();
+  }, [levelData]); // Only depend on levelData
 
   const handleWordFound = (word) => {
     if (!word) return;
     
-    // Check both forward and reverse directions
     const reversedWord = word.split('').reverse().join('');
     const foundWord = levelData.words.find(w => 
       w.toUpperCase() === word.toUpperCase() || 
@@ -87,7 +117,6 @@ const Level = ({ levelData, onLevelComplete }) => {
       setFoundWords(newFoundWords);
       setScore(newScore);
 
-      // Save progress
       saveGameProgress({
         level: levelData.id,
         score: newScore,
@@ -101,6 +130,12 @@ const Level = ({ levelData, onLevelComplete }) => {
     }
   };
 
+  const handleTimeUp = () => {
+    if (onTimeout) {
+      onTimeout();
+    }
+  };
+
   if (!grid.length) return null;
 
   return (
@@ -109,8 +144,9 @@ const Level = ({ levelData, onLevelComplete }) => {
         <h2>Level {levelData.id}</h2>
         <Score score={score} />
         <Timer 
+          key={`timer-${levelData.id}`} // Add a key to Timer
           initialTime={levelData.timeLimit}
-          onTimeUp={() => onLevelComplete(score)}
+          onTimeUp={onTimeout}
         />
       </LevelHeader>
 

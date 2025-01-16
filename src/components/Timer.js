@@ -11,8 +11,13 @@ const TimerContainer = styled.div`
 const Timer = ({ initialTime, onTimeUp }) => {
   const [time, setTime] = useState(initialTime);
 
+  // Reset timer when initialTime changes or component remounts
   useEffect(() => {
-    if (time === 0) {
+    setTime(initialTime);
+  }, [initialTime]);
+
+  useEffect(() => {
+    if (time <= 0) {
       onTimeUp();
       return;
     }
@@ -25,10 +30,11 @@ const Timer = ({ initialTime, onTimeUp }) => {
   }, [time, onTimeUp]);
 
   return (
-    <TimerContainer time={time}>
-      {formatTime(time)}
+    <TimerContainer>
+      Time: {Math.floor(time / 60)}:{(time % 60).toString().padStart(2, '0')}
     </TimerContainer>
   );
 };
+
 
 export default Timer;

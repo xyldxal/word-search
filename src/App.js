@@ -112,6 +112,7 @@ function App() {
   const [highestLevel, setHighestLevel] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [timeoutModal, setTimeoutModal] = useState(false);
 
   useEffect(() => {
     // Load saved progress when app starts
@@ -139,11 +140,20 @@ function App() {
 
     setModalMessage(`Level Complete!\nScore: ${levelScore}\nTotal Score: ${newTotalScore}`);
     setShowModal(true);
+    setTimeoutModal(false);
+  };
+
+  const handleTimeout = () => {
+    setTimeoutModal(true);
+    setModalMessage("You ran out of time!");
+    setShowModal(true);
   };
 
   const startLevel = (levelNumber) => {
+    setTimeoutModal(false);
     setCurrentLevel(levelNumber);
     setShowModal(false);
+    setModalMessage('');
   };
 
   const resetGame = () => {
@@ -194,7 +204,7 @@ function App() {
       setCurrentLevel(0);
       return null;
     }
-
+  
     return (
       <>
         <Button 
@@ -204,17 +214,20 @@ function App() {
           Back to Menu
         </Button>
         <Level
+          key={`level-${currentLevel}-${Date.now()}`} // Add this key
           levelData={levelData}
           onLevelComplete={handleLevelComplete}
+          onTimeout={handleTimeout}
         />
       </>
     );
   };
+  
 
   return (
     <AppContainer>
       <GameHeader>
-        <Title>Word Search Game</Title>
+        <Title>word search</Title>
       </GameHeader>
 
       {currentLevel === 0 ? renderMenu() : renderLevel()}
@@ -222,16 +235,43 @@ function App() {
       {showModal && (
         <ModalOverlay>
           <Modal>
-            <h2>Congratulations!</h2>
-            <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
-            <Button 
-              onClick={() => {
-                setShowModal(false);
-                setCurrentLevel(currentLevel + 1);
-              }}
-            >
-              Next Level
-            </Button>
+            {timeoutModal ? (
+              <>
+                <h2>Time's Up!</h2>
+                <p>{modalMessage}</p>
+                <Button 
+                  onClick={() => {
+                    setShowModal(false);
+                    setTimeoutModal(false); // Reset timeout state
+                    startLevel(currentLevel); // Restart the current level
+                  }}
+                >
+                  Try Again
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setShowModal(false);
+                    setTimeoutModal(false);
+                    setCurrentLevel(0); // Go back to menu
+                  }}
+                >
+                  Back to Menu
+                </Button>
+              </>
+            ) : (
+              <>
+                <h2>Congratulations!</h2>
+                <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
+                <Button 
+                  onClick={() => {
+                    setShowModal(false);
+                    setCurrentLevel(currentLevel + 1);
+                  }}
+                >
+                  Next Level
+                </Button>
+              </>
+            )}
           </Modal>
         </ModalOverlay>
       )}

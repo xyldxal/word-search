@@ -2,24 +2,28 @@
 export const levels = [
     {
       id: 1,
-      gridSize: 15,
-      words: ['SHABU', 'PEKPEK', 'BURAT', 'KIFFY', 'VLAT', 'POKPOK', 'BETLOG'],
+      gridSize: 10,
+      words: ['SHABU', 'PEKPEK', 'BURAT', 'KIFFY'],
       timeLimit: 120,
       difficulty: 'easy'
     },
     {
       id: 2,
-      gridSize: 15,
-      words: ['TONI', 'FOWLER', 'JIAFEI'],
+      gridSize: 10,
+      words: ['TONI', 'FOWLER', 'JIAFEI', 'POSAY'],
       timeLimit: 120,
       difficulty: 'easy'
     },
-    // Add more levels following the same pattern
+    {
+      id: 3,
+      gridSize: 10,
+      words: ['VLAT', 'POKPOK', 'BETLOG', 'MODTA'],
+      timeLimit: 120,
+      difficulty: 'easy'
+    },
   ];
   
-  // Helper function to generate the grid for each level
   export const generateGrid = (size, words) => {
-    // Create empty grid
     const grid = Array(size * size).fill('');
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     
