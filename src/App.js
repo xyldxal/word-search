@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Level from './components/Level';
 import { levels } from './data/levels';
 import { loadGameProgress, saveGameProgress, clearGameProgress } from './utils/storage';
-import GlobalStyle from 'styled-components';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -213,33 +212,30 @@ function App() {
   };
 
   return (
-    <>
-      <GlobalStyle />
-      <AppContainer>
-        <GameHeader>
-          <Title>Word Search Game</Title>
-        </GameHeader>
+    <AppContainer>
+      <GameHeader>
+        <Title>Word Search Game</Title>
+      </GameHeader>
 
-        {currentLevel === 0 ? renderMenu() : renderLevel()}
+      {currentLevel === 0 ? renderMenu() : renderLevel()}
 
-        {showModal && (
-          <ModalOverlay>
-            <Modal>
-              <h2>Congratulations!</h2>
-              <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
-              <Button 
-                onClick={() => {
-                  setShowModal(false);
-                  setCurrentLevel(currentLevel + 1);
-                }}
-              >
-                Next Level
-              </Button>
-            </Modal>
-          </ModalOverlay>
-        )}
-      </AppContainer>
-    </>
+      {showModal && (
+        <ModalOverlay>
+          <Modal>
+            <h2>Congratulations!</h2>
+            <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
+            <Button 
+              onClick={() => {
+                setShowModal(false);
+                setCurrentLevel(currentLevel + 1);
+              }}
+            >
+              Next Level
+            </Button>
+          </Modal>
+        </ModalOverlay>
+      )}
+    </AppContainer>
   );
 }
 
