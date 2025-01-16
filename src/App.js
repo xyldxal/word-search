@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Level from './components/Level';
 import { levels } from './data/levels';
 import { loadGameProgress, saveGameProgress, clearGameProgress } from './utils/storage';
-import { createGlobalStyle } from 'styled-components';
+import GlobalStyle from 'styled-components';
 
 const AppContainer = styled.div`
   min-height: 100vh;
