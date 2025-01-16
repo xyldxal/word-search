@@ -56,18 +56,28 @@ const Level = ({ levelData, onLevelComplete }) => {
   const [grid, setGrid] = useState([]);
 
   useEffect(() => {
-    // Generate grid when level starts
+    // Reset state when level changes
+    setFoundWords([]);
+    setScore(0);
+    setTimeRemaining(levelData.timeLimit);
+    
+    // Generate new grid
     const { grid: newGrid } = generateWordSearchGrid(
       levelData.gridSize, 
       levelData.words
     );
-    setGrid(newGrid.flat()); // Flatten the grid here
+    setGrid(Array.isArray(newGrid) ? newGrid.flat() : []);
   }, [levelData]);
 
   const handleWordFound = (word) => {
+    if (!word) return;
+    
     // Check both forward and reverse directions
     const reversedWord = word.split('').reverse().join('');
-    const foundWord = levelData.words.find(w => w === word || w === reversedWord);
+    const foundWord = levelData.words.find(w => 
+      w.toUpperCase() === word.toUpperCase() || 
+      w.toUpperCase() === reversedWord.toUpperCase()
+    );
     
     if (foundWord && !foundWords.includes(foundWord)) {
       const newFoundWords = [...foundWords, foundWord];
@@ -90,6 +100,8 @@ const Level = ({ levelData, onLevelComplete }) => {
       }
     }
   };
+
+  if (!grid.length) return null;
 
   return (
     <LevelContainer>

@@ -165,11 +165,6 @@ function App() {
           disabled={index + 1 > highestLevel}
         >
           Level {level.id}
-          {index + 1 <= highestLevel && (
-            <span style={{ fontSize: '0.8em', marginLeft: '8px' }}>
-              🔓
-            </span>
-          )}
         </Button>
       ))}
       <Button onClick={resetGame}>Reset Progress</Button>
@@ -179,13 +174,24 @@ function App() {
 
   const renderLevel = () => {
     const levelData = levels[currentLevel - 1];
-    if (!levelData) return null;
+    if (!levelData) {
+      setCurrentLevel(0);
+      return null;
+    }
 
     return (
-      <Level
-        levelData={levelData}
-        onLevelComplete={handleLevelComplete}
-      />
+      <>
+        <Button 
+          onClick={() => setCurrentLevel(0)}
+          style={{ position: 'absolute', top: '20px', left: '20px' }}
+        >
+          Back to Menu
+        </Button>
+        <Level
+          levelData={levelData}
+          onLevelComplete={handleLevelComplete}
+        />
+      </>
     );
   };
 
