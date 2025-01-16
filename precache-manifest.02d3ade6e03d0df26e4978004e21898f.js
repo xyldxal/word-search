@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "25bb751a2ab5b3b8f6335058b82216a8",
+    "revision": "be8dffc33ca42c86f34a229d7cde1d56",
     "url": "/word-search/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/word-search/static/js/2.44f925cd.chunk.js"
   },
   {
-    "revision": "be7cb2be2c3ca0e7fc26",
-    "url": "/word-search/static/js/main.2c4c7da9.chunk.js"
+    "revision": "97be532bbd415cc06b30",
+    "url": "/word-search/static/js/main.6088b9ce.chunk.js"
   },
   {
     "revision": "d7bffd6a3df7e7487e9a",
