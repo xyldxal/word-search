@@ -104,6 +104,13 @@ const Modal = styled.div`
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
   text-align: center;
   z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  max-width: 90%;
+  margin: 0 auto;
 `;
 
 function App() {
@@ -207,18 +214,18 @@ function App() {
   
     return (
       <>
-        <Button 
-          onClick={() => setCurrentLevel(0)}
-          style={{ position: 'absolute', top: '20px', left: '20px' }}
-        >
-          Back to Menu
-        </Button>
         <Level
           key={`level-${currentLevel}-${Date.now()}`} // Add this key
           levelData={levelData}
           onLevelComplete={handleLevelComplete}
           onTimeout={handleTimeout}
         />
+        <Button 
+          onClick={() => setCurrentLevel(0)}
+          style={{ position: 'absolute', top: '20px', left: '20px' }}
+        >
+          Back to Menu
+        </Button>
       </>
     );
   };
@@ -234,13 +241,23 @@ function App() {
 
       {showModal && (
         <ModalOverlay>
-          <Modal>
+          <Modal style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            maxWidth: '90%',
+            margin: '0 auto',
+          }}>
             {timeoutModal ? (
               <>
                 <h2>Time's Up!</h2>
                 <p>{modalMessage}</p>
                 <Button 
+                  style={{ padding: '10px 20px', fontSize: '16px' }}
                   onClick={() => {
+                    console.log('Button 1 clicked'); // Debugging log
                     setShowModal(false);
                     setTimeoutModal(false); // Reset timeout state
                     startLevel(currentLevel); // Restart the current level
@@ -249,7 +266,9 @@ function App() {
                   Try Again
                 </Button>
                 <Button 
+                  style={{ padding: '10px 20px', fontSize: '16px' }}
                   onClick={() => {
+                    console.log('Button 2 clicked'); // Debugging log
                     setShowModal(false);
                     setTimeoutModal(false);
                     setCurrentLevel(0); // Go back to menu
@@ -263,7 +282,9 @@ function App() {
                 <h2>Congratulations!</h2>
                 <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
                 <Button 
+                  style={{ padding: '10px 20px', fontSize: '16px' }}
                   onClick={() => {
+                    console.log('Button 3 clicked'); // Debugging log
                     setShowModal(false);
                     setCurrentLevel(currentLevel + 1);
                   }}
