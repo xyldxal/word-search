@@ -77,11 +77,32 @@ const Button = styled.button`
   }
   
   @media (max-width: 768px) {
-    padding: 15px 30px; // Increased padding for better touch target
-    margin: 8px;
-    font-size: 1.2rem; // Slightly larger font for mobile
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 18px; // Larger font for better visibility
+    min-width: 150px; // Ensure buttons are wide enough to tap
+    min-height: 44px; // Apple's recommended minimum touch target size
   }
 `;
+
+const TouchButton = ({ onClick, children, style }) => {
+  const handleInteraction = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClick();
+  };
+
+  return (
+    <Button
+      style={style}
+      onClick={handleInteraction}
+      onTouchStart={(e) => e.preventDefault()}
+      onTouchEnd={handleInteraction}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -240,7 +261,9 @@ function App() {
       {currentLevel === 0 ? renderMenu() : renderLevel()}
 
       {showModal && (
-        <ModalOverlay>
+        <ModalOverlay
+          onTouchMove={(e) => e.preventDefault()} // Prevent background scrolling
+        >
           <Modal style={{
             display: 'flex',
             flexDirection: 'column',
@@ -249,48 +272,43 @@ function App() {
             padding: '20px',
             maxWidth: '90%',
             margin: '0 auto',
+            gap: '15px', // Add space between elements
           }}>
             {timeoutModal ? (
               <>
                 <h2>Time's Up!</h2>
                 <p>{modalMessage}</p>
-                <Button 
-                  style={{ padding: '10px 20px', fontSize: '16px' }}
+                <TouchButton 
                   onClick={() => {
-                    console.log('Button 1 clicked'); // Debugging log
                     setShowModal(false);
-                    setTimeoutModal(false); // Reset timeout state
-                    startLevel(currentLevel); // Restart the current level
+                    setTimeoutModal(false);
+                    startLevel(currentLevel);
                   }}
                 >
                   Try Again
-                </Button>
-                <Button 
-                  style={{ padding: '10px 20px', fontSize: '16px' }}
+                </TouchButton>
+                <TouchButton 
                   onClick={() => {
-                    console.log('Button 2 clicked'); // Debugging log
                     setShowModal(false);
                     setTimeoutModal(false);
-                    setCurrentLevel(0); // Go back to menu
+                    setCurrentLevel(0);
                   }}
                 >
                   Back to Menu
-                </Button>
+                </TouchButton>
               </>
             ) : (
               <>
                 <h2>Congratulations!</h2>
                 <p style={{ whiteSpace: 'pre-line' }}>{modalMessage}</p>
-                <Button 
-                  style={{ padding: '10px 20px', fontSize: '16px' }}
+                <TouchButton 
                   onClick={() => {
-                    console.log('Button 3 clicked'); // Debugging log
                     setShowModal(false);
                     setCurrentLevel(currentLevel + 1);
                   }}
                 >
                   Next Level
-                </Button>
+                </TouchButton>
               </>
             )}
           </Modal>
