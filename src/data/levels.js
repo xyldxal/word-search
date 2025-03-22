@@ -3,21 +3,21 @@ export const levels = [
     {
       id: 1,
       gridSize: 10,
-      words: ['SHABU', 'PEKPEK', 'BURAT', 'KIFFY'],
+      words: ['HARP', 'DOCTOR', 'CHIP', 'THINK'],
       timeLimit: 120,
       difficulty: 'easy'
     },
     {
       id: 2,
       gridSize: 10,
-      words: ['TONI', 'FOWLER', 'JIAFEI', 'POSAY'],
+      words: ['GREAT', 'IDEA', 'REASON', 'VOTE'],
       timeLimit: 120,
       difficulty: 'easy'
     },
     {
       id: 3,
       gridSize: 10,
-      words: ['VLAT', 'POKPOK', 'BETLOG', 'MODTA'],
+      words: ['APPLE', 'STONE', 'HARMONY', 'COFFEE'],
       timeLimit: 120,
       difficulty: 'easy'
     },
